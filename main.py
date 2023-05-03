@@ -4,6 +4,8 @@ from gym_super_mario_bros.actions import COMPLEX_MOVEMENT
 import gym
 from agent import Agent
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
 
 if __name__ == '__main__':
     env = gym.make('SuperMarioBros-v0', apply_api_compatibility=True)
@@ -17,7 +19,8 @@ if __name__ == '__main__':
     for i in range(n_games):
         score = 0
         done = False
-        observation = env.reset()
+        observation = env.reset()[0]
+
         while not done:
             action = agent.choose_action(observation)
             observation_, reward, terminated, truncated, info = env.step(action)
