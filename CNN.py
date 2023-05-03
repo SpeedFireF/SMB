@@ -1,3 +1,6 @@
+import torch
+import torch.nn as nn
+
 class CNN(nn.Module):
     def __init__(self, action_size=None, learning_rate=None):
         super(CNN, self).__init__()
