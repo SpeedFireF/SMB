@@ -4,6 +4,8 @@ from gym_super_mario_bros.actions import COMPLEX_MOVEMENT
 import gym
 from agent import Agent
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
 
 if __name__ == '__main__':
     env = gym.make('SuperMarioBros-v0', apply_api_compatibility=True)
