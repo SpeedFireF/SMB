@@ -31,8 +31,20 @@ class Agent:
         self.reward_memory[index] = reward
         self.action_memory[index] = action
         self.terminal_memory[index] = terminal
-
         self.mem_cntr += 1
+    
+    def save_memory(self, path):
+        states, actions, rewards, next_states, dones = self.state_memory, self.action_memory, self.reward_memory, self.new_state_memory, self.terminal_memory
+        np.savez(path, states=states, actions=actions, rewards=rewards, next_states=next_states, dones=dones)
+
+    def load_memory(self, path):
+        data = np.load(path)
+        self.state_memory = data['states']
+        self.action_memory = data['actions']
+        self.reward_memory = data['rewards']
+        self.new_state_memory = data['next_states']
+        self.terminal_memory = data['dones']
+
 
     def choose_action(self, observation):
         if np.random.random() > self.epsilon:

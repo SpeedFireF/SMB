@@ -18,7 +18,15 @@ class CNN(nn.Module):
 
         self.optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         self.loss = nn.MSELoss()
-        self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+
+        if torch.backends.mps.is_available():
+            self.device = torch.device('mps')
+        elif torch.cuda.is_available():
+            self.device = torch.device('cuda')
+        else:
+            self.device = torch.device('cpu')
+        
+        self.to(self.device)
 
     def forward(self, x):
         x = x.permute(0, 3, 1, 2)
