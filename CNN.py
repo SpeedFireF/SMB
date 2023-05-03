@@ -15,7 +15,6 @@ class CNN(nn.Module):
         self.fc2 = nn.Linear(512, self.action_size)
 
         self.relu = nn.ReLU()
-        self.softmax = nn.Softmax(dim=1)
 
         self.optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         self.loss_fn = nn.MSELoss()
@@ -26,5 +25,4 @@ class CNN(nn.Module):
         x = self.relu(self.conv3(x))
         x = self.flatten(x)
         x = self.relu(self.fc1(x))
-        x = self.softmax(self.fc2(x))
         return x
