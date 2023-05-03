@@ -36,6 +36,7 @@ class Agent:
     def save_memory(self, path):
         states, actions, rewards, next_states, dones = self.state_memory, self.action_memory, self.reward_memory, self.new_state_memory, self.terminal_memory
         np.savez(path, states=states, actions=actions, rewards=rewards, next_states=next_states, dones=dones)
+        T.save(self.Q_eval.state_dict(), 'CNN_model.pth')
 
     def load_memory(self, path):
         data = np.load(path)
@@ -44,6 +45,8 @@ class Agent:
         self.reward_memory = data['rewards']
         self.new_state_memory = data['next_states']
         self.terminal_memory = data['dones']
+        self.Q_eval = CNN()
+        self.Q_eval.load_state_dict(T.load('CNN_model.pth'))
 
 
     def choose_action(self, observation):
