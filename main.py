@@ -8,7 +8,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 if __name__ == '__main__':
-    env = gym.make('SuperMarioBros-v0', apply_api_compatibility=True)
+    env = gym.make('SuperMarioBros-v0', apply_api_compatibility=True, render_mode='human')
     env = JoypadSpace(env, COMPLEX_MOVEMENT)
 
     agent = Agent(gamma=0.99, epsilon=1.0, batch_size=64, n_actions=12, eps_end=0.01,
