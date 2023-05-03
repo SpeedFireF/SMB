@@ -18,10 +18,8 @@ class Agent:
         self.replace_target = 100
 
         self.Q_eval = CNN(action_size=n_actions, learning_rate=lr)
-        self.state_memory = np.zeros((self.mem_size, *input_dims),
-                                     dtype=np.float32)
-        self.new_state_memory = np.zeros((self.mem_size, *input_dims),
-                                         dtype=np.float32)
+        self.state_memory = np.zeros((self.mem_size, *input_dims), dtype=np.float32)
+        self.new_state_memory = np.zeros((self.mem_size, *input_dims), dtype=np.float32)
         self.action_memory = np.zeros(self.mem_size, dtype=np.int32)
         self.reward_memory = np.zeros(self.mem_size, dtype=np.float32)
         self.terminal_memory = np.zeros(self.mem_size, dtype=bool)
