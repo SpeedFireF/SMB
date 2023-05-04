@@ -13,6 +13,7 @@ if __name__ == '__main__':
 
     agent = Agent(gamma=0.99, epsilon=1.0, batch_size=8, n_actions=12, eps_end=0.01,
                   input_dims=[240, 256, 3], lr=0.001)
+    
     scores, eps_history = [], []
     n_games = 1
 
