@@ -3,7 +3,7 @@ import numpy as np
 from CNN import CNN
 
 class Agent:
-    def __init__(self, gamma=0.99, epsilon = 1, input_dims = None, batch_size=8, n_actions=12,
+    def __init__(self, gamma=0.99, epsilon = 1, input_dims = [240, 256, 3], batch_size=8, n_actions=12,
                  max_mem_size=1000, eps_end=0.05, eps_dec=5e-4, lr= 0.001, device='cpu'):
         self.gamma = gamma
         self.epsilon = epsilon
@@ -49,6 +49,12 @@ class Agent:
         else:
             action = np.random.choice(self.action_space)
 
+        return action
+    
+    def play(self, observation):
+        state = T.tensor([observation]).to(self.Q_eval.device)
+        actions = self.Q_eval.forward(state)
+        action = T.argmax(actions).item()
         return action
 
     def learn(self):
