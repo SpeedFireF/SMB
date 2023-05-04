@@ -1,8 +1,8 @@
-import torch
+import torch as T
 import torch.nn as nn
 
 class CNN(nn.Module):
-    def __init__(self, action_size=None, learning_rate=None):
+    def __init__(self, action_size=None, learning_rate=None, device='cpu'):
         super(CNN, self).__init__()
         self.action_size = action_size
         self.learning_rate = learning_rate
@@ -16,16 +16,9 @@ class CNN(nn.Module):
 
         self.relu = nn.ReLU()
 
-        self.optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        self.optimizer = T.optim.Adam(self.parameters(), lr=self.learning_rate)
         self.loss = nn.MSELoss()
-
-        if torch.backends.mps.is_available():
-            self.device = torch.device('mps')
-        elif torch.cuda.is_available():
-            self.device = torch.device('cuda')
-        else:
-            self.device = torch.device('cpu')
-        
+        self.device = T.device(device)
         self.to(self.device)
 
     def forward(self, x):
