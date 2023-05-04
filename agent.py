@@ -39,14 +39,17 @@ class Agent:
         T.save(self.Q_eval.state_dict(), 'CNN_model.pth')
 
     def load_memory(self, path):
-        data = np.load(path)
-        self.state_memory = data['states']
-        self.action_memory = data['actions']
-        self.reward_memory = data['rewards']
-        self.new_state_memory = data['next_states']
-        self.terminal_memory = data['dones']
-        self.Q_eval = CNN()
-        self.Q_eval.load_state_dict(T.load('CNN_model.pth'))
+        try:
+            data = np.load(path)
+            self.state_memory = data['states']
+            self.action_memory = data['actions']
+            self.reward_memory = data['rewards']
+            self.new_state_memory = data['next_states']
+            self.terminal_memory = data['dones']
+        except FileNotFoundError as e:
+            print("No saved memory found.")
+        self.Q_eval = CNN(action_size=len(self.action_space), learning_rate=self.lr)
+        self.Q_eval.load_state_dict(T.load('CNN_model.pth', map_location=T.device('cpu')))
 
 
     def choose_action(self, observation):
