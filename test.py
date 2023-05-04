@@ -11,9 +11,9 @@ if __name__ == '__main__':
     env = gym.make('SuperMarioBros-v0', apply_api_compatibility=True, render_mode='human')
     env = JoypadSpace(env, COMPLEX_MOVEMENT)
 
-    agent = Agent(gamma=0.99, epsilon=1.0, batch_size=8, n_actions=12, eps_end=0.01,
-                  input_dims=[240, 256, 3], lr=0.001)
-    agent.load_memory('memory.npz')
+    agent = Agent(epsilon=0, n_actions=12,
+                  input_dims=[240, 256, 3])
+    agent.load_memory()
 
     done = False
     observation = env.reset()[0]

@@ -3,8 +3,8 @@ import numpy as np
 from CNN import CNN
 
 class Agent:
-    def __init__(self, gamma, epsilon, lr, input_dims, batch_size, n_actions,
-                 max_mem_size=1000, eps_end=0.05, eps_dec=5e-4):
+    def __init__(self, gamma=0.99, epsilon = 1, input_dims = None, batch_size=8, n_actions=12,
+                 max_mem_size=1000, eps_end=0.05, eps_dec=5e-4, lr= 0.001):
         self.gamma = gamma
         self.epsilon = epsilon
         self.eps_min = eps_end
@@ -33,21 +33,10 @@ class Agent:
         self.terminal_memory[index] = terminal
         self.mem_cntr += 1
     
-    def save_memory(self, path):
-        states, actions, rewards, next_states, dones = self.state_memory, self.action_memory, self.reward_memory, self.new_state_memory, self.terminal_memory
-        np.savez(path, states=states, actions=actions, rewards=rewards, next_states=next_states, dones=dones)
+    def save_memory(self):
         T.save(self.Q_eval.state_dict(), 'CNN_model.pth')
 
-    def load_memory(self, path):
-        try:
-            data = np.load(path)
-            self.state_memory = data['states']
-            self.action_memory = data['actions']
-            self.reward_memory = data['rewards']
-            self.new_state_memory = data['next_states']
-            self.terminal_memory = data['dones']
-        except FileNotFoundError as e:
-            print("No saved memory found.")
+    def load_memory(self):
         self.Q_eval = CNN(action_size=len(self.action_space), learning_rate=self.lr)
         self.Q_eval.load_state_dict(T.load('CNN_model.pth', map_location=T.device('cpu')))
 
