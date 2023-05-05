@@ -4,7 +4,7 @@ from CNN import CNN
 
 class Agent:
     def __init__(self, gamma=0.99, epsilon = 1, input_dims = [240, 256, 3], batch_size=8, n_actions=12,
-                 max_mem_size=1000, eps_end=0.05, eps_dec=5e-4, lr= 0.001, device='cpu'):
+                 max_mem_size=500, eps_end=0.05, eps_dec=5e-4, lr= 0.001, device=None):
         self.gamma = gamma
         self.epsilon = epsilon
         self.eps_min = eps_end
@@ -15,9 +15,8 @@ class Agent:
         self.batch_size = batch_size
         self.mem_cntr = 0
         self.iter_cntr = 0
-        self.replace_target = 100
-        self.device = T.device(device)
-        self.Q_eval = CNN(action_size=n_actions, learning_rate=lr, device=device)
+        self.device = device
+        self.Q_eval = CNN(action_size=n_actions, learning_rate=lr, device=self.device)
         self.state_memory = np.zeros((self.mem_size, *input_dims), dtype=np.float32)
         self.new_state_memory = np.zeros((self.mem_size, *input_dims), dtype=np.float32)
         self.action_memory = np.zeros(self.mem_size, dtype=np.int32)
@@ -37,8 +36,7 @@ class Agent:
         T.save(self.Q_eval.state_dict(), 'CNN_model.pth')
 
     def load_memory(self):
-        self.Q_eval = CNN(action_size=len(self.action_space), learning_rate=self.lr)
-        self.Q_eval.load_state_dict(T.load('CNN_model.pth', map_location=T.device(self.device)))
+        self.Q_eval.load_state_dict(T.load('CNN_model.pth', map_location=self.device))
 
 
     def choose_action(self, observation):

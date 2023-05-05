@@ -2,7 +2,7 @@ import torch as T
 import torch.nn as nn
 
 class CNN(nn.Module):
-    def __init__(self, action_size=None, learning_rate=None, device='cpu'):
+    def __init__(self, action_size=None, learning_rate=None, device=None):
         super(CNN, self).__init__()
         self.action_size = action_size
         self.learning_rate = learning_rate
@@ -18,7 +18,7 @@ class CNN(nn.Module):
 
         self.optimizer = T.optim.Adam(self.parameters(), lr=self.learning_rate)
         self.loss = nn.MSELoss()
-        self.device = T.device(device)
+        self.device = device
         self.to(self.device)
 
     def forward(self, x):

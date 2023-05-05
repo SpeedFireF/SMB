@@ -10,16 +10,17 @@ warnings.filterwarnings("ignore")
 
 env = gym.make('SuperMarioBros-v0', apply_api_compatibility=True, render_mode='human')
 env = JoypadSpace(env, COMPLEX_MOVEMENT)
-device = 'cpu'
+device = torch.device('cpu')
 
 if torch.backends.mps.is_available():
-    device = 'mps'
+    device = torch.device('mps')
 elif torch.cuda.is_available():
-    device = 'cuda'
+    device = torch.device('cuda')
 
 
 agent = Agent(device=device)
 agent.load_memory()
+
 
 done = False
 observation = env.reset()[0]

@@ -20,10 +20,10 @@ elif torch.cuda.is_available():
     device = 'cuda'
 
 
-agent = Agent(gamma=0.99, epsilon=1.0, batch_size=8, n_actions=12, eps_end=0.01,
+agent = Agent(gamma=0.99, epsilon=1.0, batch_size=4, n_actions=12, eps_end=0.01,
                 input_dims=[240, 256, 3], lr=0.001, device=device)
 
-n_games = 500
+n_games = 1
 best_score = 0
 
 
