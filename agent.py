@@ -1,5 +1,6 @@
 import torch as T
 import numpy as np
+import matplotlib.pyplot as plt
 from CNN import CNN
 
 class Agent:
@@ -22,6 +23,7 @@ class Agent:
         self.action_memory = np.zeros(self.mem_size, dtype=np.int32)
         self.reward_memory = np.zeros(self.mem_size, dtype=np.float32)
         self.terminal_memory = np.zeros(self.mem_size, dtype=bool)
+        self.loss_history = []
 
     def store_transition(self, state, action, reward, state_, terminal):
         index = self.mem_cntr % self.mem_size
@@ -55,6 +57,10 @@ class Agent:
         action = T.argmax(actions).item()
         return action
 
+    def plot_loss(self):
+        plt.plot(self.loss_history)
+        plt.show()
+    
     def learn(self):
         if self.mem_cntr < self.batch_size:
             return
@@ -82,6 +88,7 @@ class Agent:
         q_target = reward_batch + self.gamma*T.max(q_next, dim=1)[0]
 
         loss = self.Q_eval.loss(q_target, q_eval).to(self.Q_eval.device)
+        self.loss_history.append(loss.item())
         loss.backward()
         self.Q_eval.optimizer.step()
 
