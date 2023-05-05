@@ -18,7 +18,8 @@ elif torch.cuda.is_available():
     device = torch.device('cuda')
 
 
-agent = Agent(device=device)
+agent = Agent(gamma=0.99, batch_size=4, n_actions=12,
+                input_dims=[240, 256, 3], lr=0.001, device=device)
 agent.load_memory()
 
 
@@ -27,5 +28,8 @@ observation = env.reset()[0]
 while not done:
     action = agent.play(observation)
     observation_, reward, terminated, truncated, info = env.step(action)
+    agent.store_transition(observation, action, reward, 
+                                observation_, done)
+    agent.learn()
     done = terminated or truncated
     observation = observation_

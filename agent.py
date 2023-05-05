@@ -5,7 +5,7 @@ from CNN import CNN
 
 class Agent:
     def __init__(self, gamma=0.99, epsilon = 1, input_dims = [240, 256, 3], batch_size=8, n_actions=12,
-                 max_mem_size=500, eps_end=0.05, eps_dec=5e-4, lr= 0.001, device=None):
+                 max_mem_size=1000, eps_end=0.05, eps_dec=5e-4, lr= 0.001, device=None):
         self.gamma = gamma
         self.epsilon = epsilon
         self.eps_min = eps_end
