@@ -7,7 +7,7 @@ from replay_memory import ReplayMemory
 
 class Agent:
     def __init__(self, gamma=0.99, epsilon = 1, input_dims = [240, 256, 3], batch_size=8, n_actions=12,
-                 max_mem_size=10000, eps_end=0.05, eps_dec=5e-4, lr= 0.001, device=None):
+                 max_mem_size=1000, eps_end=0.05, eps_dec=5e-4, lr= 0.001, device=None):
         self.gamma = gamma
         self.epsilon = epsilon
         self.eps_min = eps_end
@@ -36,7 +36,7 @@ class Agent:
     def choose_action(self, observation):
         if np.random.random() > self.epsilon:
             observation = np.array(observation)
-            state = T.tensor(observation).to(self.Q_eval.device)
+            state = T.tensor(np.array([observation])).to(self.Q_eval.device)
             actions = self.Q_eval.forward(state)
             action = T.argmax(actions).item()
         else:
@@ -46,7 +46,7 @@ class Agent:
     
     def play(self, observation):
         observation = np.array(observation)
-        state = T.tensor(observation).to(self.Q_eval.device)
+        state = T.tensor(np.array([observation])).to(self.Q_eval.device)
         actions = self.Q_eval.forward(state)
         action = T.argmax(actions).item()
         return action
