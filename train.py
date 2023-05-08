@@ -1,7 +1,7 @@
 from nes_py.wrappers import JoypadSpace 
 import gym_super_mario_bros 
 from gym.wrappers import FrameStack
-from gym_super_mario_bros.actions import COMPLEX_MOVEMENT
+from gym_super_mario_bros.actions import SIMPLE_MOVEMENT
 import gym
 from agent import Agent
 import warnings
@@ -9,8 +9,8 @@ import torch
 from Preprocessing import SkipFrame, GrayScaleObservation, ResizeObservation
 
     
-env = gym.make('SuperMarioBros-1-1-v0', apply_api_compatibility=True, render_mode='human')
-env = JoypadSpace(env, COMPLEX_MOVEMENT)
+env = gym.make('SuperMarioBros-v0', apply_api_compatibility=True, render_mode='human')
+env = JoypadSpace(env, SIMPLE_MOVEMENT)
 env = SkipFrame(env, skip=4)
 env = GrayScaleObservation(env)
 env = ResizeObservation(env, shape=128)
@@ -24,8 +24,8 @@ elif torch.cuda.is_available():
     device = torch.device('cuda')
 
 
-agent = Agent(gamma=0.99, epsilon=1.0, batch_size=16, n_actions=12, eps_end=0.01,
-                input_dims=[4, 128, 128], lr=0.001, device=device)
+agent = Agent(gamma=0.99, epsilon=1.0, batch_size=32, n_actions=7, eps_end=0.01,
+                input_dims=[4, 128, 128], lr=0.0001, device=device, eps_dec=1e-5)
 
 n_games = 500
 best_score = 0

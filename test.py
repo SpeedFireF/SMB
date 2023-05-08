@@ -3,7 +3,7 @@ import gym_super_mario_bros
 from gym.spaces import Box
 from gym.wrappers import FrameStack
 from torchvision import transforms as T
-from gym_super_mario_bros.actions import COMPLEX_MOVEMENT
+from gym_super_mario_bros.actions import SIMPLE_MOVEMENT
 import gym
 from agent import Agent
 from Preprocessing import SkipFrame, GrayScaleObservation, ResizeObservation
@@ -12,8 +12,8 @@ import warnings
 import pickle
 warnings.filterwarnings("ignore")
 
-env = gym.make('SuperMarioBros-1-1-v0', apply_api_compatibility=True, render_mode='human')
-env = JoypadSpace(env, COMPLEX_MOVEMENT)
+env = gym.make('SuperMarioBros-v0', apply_api_compatibility=True, render_mode='human')
+env = JoypadSpace(env, SIMPLE_MOVEMENT)
 
 env = SkipFrame(env, skip=4)
 env = GrayScaleObservation(env)
