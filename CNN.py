@@ -11,7 +11,7 @@ class CNN(nn.Module):
         self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=4, stride=2)
         self.conv3 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=3, stride=1)
         self.flatten = nn.Flatten()
-        self.fc1 = nn.Linear(64 * 7 * 7, 512)
+        self.fc1 = nn.Linear(9216, 512)
         self.fc2 = nn.Linear(512, self.action_size)
 
         self.relu = nn.ReLU()

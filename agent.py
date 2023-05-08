@@ -2,6 +2,8 @@ import torch as T
 import numpy as np
 import matplotlib.pyplot as plt
 from CNN import CNN
+import pickle
+from replay_memory import ReplayMemory
 
 class Agent:
     def __init__(self, gamma=0.99, epsilon = 1, input_dims = [240, 256, 3], batch_size=8, n_actions=12,
@@ -12,33 +14,23 @@ class Agent:
         self.eps_dec = eps_dec
         self.lr = lr
         self.action_space = [i for i in range(n_actions)]
-        self.mem_size = max_mem_size
+        self.replay_memory = ReplayMemory(max_mem_size, input_dims, batch_size)
         self.batch_size = batch_size
-        self.mem_cntr = 0
-        self.iter_cntr = 0
         self.device = device
         self.Q_eval = CNN(action_size=n_actions, learning_rate=lr, device=self.device)
-        self.state_memory = np.zeros((self.mem_size, *input_dims), dtype=np.float32)
-        self.new_state_memory = np.zeros((self.mem_size, *input_dims), dtype=np.float32)
-        self.action_memory = np.zeros(self.mem_size, dtype=np.int32)
-        self.reward_memory = np.zeros(self.mem_size, dtype=np.float32)
-        self.terminal_memory = np.zeros(self.mem_size, dtype=bool)
         self.loss_history = []
 
-    def store_transition(self, state, action, reward, state_, terminal):
-        index = self.mem_cntr % self.mem_size
-        self.state_memory[index] = state
-        self.new_state_memory[index] = state_
-        self.reward_memory[index] = reward
-        self.action_memory[index] = action
-        self.terminal_memory[index] = terminal
-        self.mem_cntr += 1
     
     def save_memory(self):
         T.save(self.Q_eval.state_dict(), 'CNN_model.pth')
+        with open("agent.pkl", "wb") as f:
+            pickle.dump(self, f)
+        
+        self.replay_memory.save()
 
     def load_memory(self):
         self.Q_eval.load_state_dict(T.load('CNN_model.pth', map_location=self.device))
+        self.replay_memory = self.replay_memory.load()
 
 
     def choose_action(self, observation):
@@ -64,26 +56,16 @@ class Agent:
         plt.show()
     
     def learn(self):
-        if self.mem_cntr < self.batch_size:
+        if self.replay_memory.mem_cntr < self.batch_size:
             return
 
         self.Q_eval.optimizer.zero_grad()
-
-        max_mem = min(self.mem_cntr, self.mem_size)
-
-        batch = np.random.choice(max_mem, self.batch_size, replace=False)
+    
+        state_batch, new_state_batch, action_batch, reward_batch, terminal_batch = self.replay_memory.sample_buffer(self.device)
         batch_index = np.arange(self.batch_size, dtype=np.int32)
 
-        state_batch = T.tensor(self.state_memory[batch]).to(self.Q_eval.device)
-        new_state_batch = T.tensor(
-                self.new_state_memory[batch]).to(self.Q_eval.device)
-        action_batch = self.action_memory[batch]
-        reward_batch = T.tensor(
-                self.reward_memory[batch]).to(self.Q_eval.device)
-        terminal_batch = T.tensor(
-                self.terminal_memory[batch]).to(self.Q_eval.device)
-
         q_eval = self.Q_eval.forward(state_batch)[batch_index, action_batch]
+
         q_next = self.Q_eval.forward(new_state_batch)
         q_next[terminal_batch] = 0.0
 
@@ -94,6 +76,5 @@ class Agent:
         loss.backward()
         self.Q_eval.optimizer.step()
 
-        self.iter_cntr += 1
         self.epsilon = self.epsilon - self.eps_dec \
             if self.epsilon > self.eps_min else self.eps_min
