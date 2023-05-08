@@ -36,7 +36,7 @@ class Agent:
     def choose_action(self, observation):
         if np.random.random() > self.epsilon:
             observation = np.array(observation)
-            state = T.tensor([observation]).to(self.Q_eval.device)
+            state = T.tensor(observation).to(self.Q_eval.device)
             actions = self.Q_eval.forward(state)
             action = T.argmax(actions).item()
         else:
@@ -46,7 +46,7 @@ class Agent:
     
     def play(self, observation):
         observation = np.array(observation)
-        state = T.tensor(np.array([observation])).to(self.Q_eval.device)
+        state = T.tensor(observation).to(self.Q_eval.device)
         actions = self.Q_eval.forward(state)
         action = T.argmax(actions).item()
         return action
