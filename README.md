@@ -1,3 +1,5 @@
+![Static Badge](https://img.shields.io/badge/LICENSE-MIT-green?link=https%3A%2F%2Fgithub.com%2FSpeedFireF%2FSMB%2Fblob%2Fmain%2FLICENSE)
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
