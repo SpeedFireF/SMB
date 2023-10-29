@@ -16,7 +16,7 @@
      ·
     <a href="https://docs.google.com/presentation/d/15U_vOCyh78EYBQvJfUNhZv5bmPlUOVv3yguzTn1xpCE/edit#slide=id.gace710277d_0_491"><strong>View Presentation »</strong></a>
      ·
-    <a href=""><strong>Check Project Paper »</strong></a>
+    <a href="https://drive.google.com/file/d/1C3u76hoq-7fqbN1T6aOajf9SB4nmE7sR/view?usp=sharing"><strong>Check Project Paper »</strong></a>
     <br />
   </p>
   </p>
@@ -85,7 +85,7 @@ dummy text
 
 3. **Teaching Tool**: Educators can use the AI agent to demonstrate reinforcement learning concepts in a fun and interactive way. It can help students grasp the fundamentals of AI and machine learning.
 
-_For more examples, please refer to the [Project Paper](https://example.com)_
+_For more examples, please refer to the [Project Paper](https://drive.google.com/file/d/1C3u76hoq-7fqbN1T6aOajf9SB4nmE7sR/view?usp=sharing)_
 
 <!-- CONTACT -->
 ## Contact
