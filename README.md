@@ -73,7 +73,7 @@ Make sure you have [nes-py 8.1.5+](https://pypi.org/project/nes-py/) and [gym 0.
 2. Install needed packages above
 3. You can access train process using [train.py](https://github.com/SpeedFireF/SMB/blob/main/train.py) and then test the trained model inside the [test.py](https://github.com/SpeedFireF/SMB/blob/main/test.py)
 
-### Model Architecture and training
+### Model Architecture: Deep Q-Network (DQN) with Replay Memory and Q-learning
 The model architecture is a Deep Q-Network (DQN) that incorporates replay memory for enhanced training. It employs Q-learning to approximate the Q-value function, using a Convolutional Neural Network (CNN). During training, the replay memory stores transitions, and the Q-network is updated periodically. It uses an epsilon-greedy policy for action selection, and the update process involves computing target Q-values as the sum of rewards and discounted maximum Q-values for the next state, with weights updated through backpropagation.
 
 <!-- USAGE EXAMPLES -->
