@@ -76,6 +76,10 @@ Make sure you have [nes-py 8.1.5+](https://pypi.org/project/nes-py/) and [gym 0.
 ### Model Architecture: Deep Q-Network (DQN) with Replay Memory
 The model architecture is a Deep Q-Network (DQN) that incorporates replay memory for enhanced training. It employs Q-learning to approximate the Q-value function, using a Convolutional Neural Network (CNN). During training, the replay memory stores transitions, and the Q-network is updated periodically. It uses an epsilon-greedy policy for action selection, and the update process involves computing target Q-values as the sum of rewards and discounted maximum Q-values for the next state, with weights updated through backpropagation.
 
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="https://d2mk45aasx86xg.cloudfront.net/deep_q_learning_example_795524f095.webp" alt="Logo" >
+  </a>
+
 <!-- USAGE EXAMPLES -->
 ## Usage
 
